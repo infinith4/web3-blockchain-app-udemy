@@ -16,3 +16,11 @@ npm init -y
 ```
 npm start
 ```
+
+
+```
+cd smart_contract
+npm i --save-dev hardhat
+npx hardhat
+npx hardhat test
+```
