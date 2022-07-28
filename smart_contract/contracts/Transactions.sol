@@ -8,4 +8,10 @@ contract Transactions {
         address receiver;
         uint amount;
     }
+
+    TransferStruct[] transactions;
+
+    function addToBlockChain(address payable receiver, uint amount) public {
+        transactions.push(TransferStruct(msg.sender, receiver, amount));
+    }
 }
