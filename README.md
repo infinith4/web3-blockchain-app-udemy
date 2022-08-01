@@ -16,8 +16,7 @@ npm init -y
 ```
 npm start
 ```
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+
 
 ```
 cd smart_contract
@@ -25,3 +24,9 @@ npm i --save-dev hardhat
 npx hardhat
 npx hardhat test
 ```
+
+```
+npx hardhat run scripts/deploy.js --network goerli
+```
+
+npm install --save ethers
