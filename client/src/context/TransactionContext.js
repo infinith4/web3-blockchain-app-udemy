@@ -1,7 +1,6 @@
 import { ethers } from "ethers"
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { contractABI, contractAddress } from "../utils/connect";
-
 
 export const TransactionContext = createContext();
 
@@ -45,7 +44,7 @@ export const TransactionProvider = ({children}) => {
         //メタマスクを持っていれば接続を開始する
         const accounts = await ethereum.request({method: 'eth_requestAccounts'});
         console.log(accounts[0]);
-        
+
         setCurrentAccount(accounts[0]);
     }
 
@@ -53,5 +52,8 @@ export const TransactionProvider = ({children}) => {
         checkMetamaskWalletConnected();
     },[]);
 
-    return (<TransactionContext.Provider value={{name: "shincode" }}>{children}</TransactionContext.Provider>);
+    return (
+        <TransactionContext.Provider value={{ connectWallet }}>
+          {children}
+        </TransactionContext.Provider>);
 };
