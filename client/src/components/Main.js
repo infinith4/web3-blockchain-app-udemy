@@ -3,8 +3,11 @@ import { useContext } from 'react'
 import { TransactionContext } from '../context/TransactionContext'
 
 const Main = () => {
-  const {connectWallet} = useContext(TransactionContext);
+  const { connectWallet, sendTransaction, handleChange } = useContext(TransactionContext);
   
+  const handleSubmit = () => {
+    sendTransaction();
+  }
   return (
     <div className='mainContainer'>
 
@@ -15,9 +18,9 @@ const Main = () => {
       </button>
     </div>
     <div className='inputContainer'>
-    <input type='text' placeholder='address' name="addressTo" />
-      <input type='number' placeholder='address' name="amount" step="0.0001" />
-    <button type='button'>send</button>
+    <input type='text' placeholder='address' name="addressTo" onChange={handleChange} />
+      <input type='number' placeholder='amount' name="amount" step="0.0001" onChange={handleChange} />
+    <button type='button' onClick={handleSubmit}>send</button>
     </div>
     </div>
   )

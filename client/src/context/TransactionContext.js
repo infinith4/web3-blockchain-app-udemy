@@ -4,7 +4,7 @@ import { contractABI, contractAddress } from "../utils/connect";
 
 export const TransactionContext = createContext();
 
-const { ethereum } = window.ethereum;
+const { ethereum } = window;
 
 //get smartcontract
 
@@ -30,7 +30,19 @@ const getSmartContract = () => {
 
 export const TransactionProvider = ({children}) => {
     const [currentAccount, setCurrentAccount] = useState("");
+    const [inputFormData, setInputFormData] = useState({
+        addressTo: "",
+        amount: "",
+    });
 
+    const handleChange = (e, name) => {
+        setInputFormData((prevInputFormData) => ({
+            ...prevInputFormData,
+            [name]: e.target.value
+        }));
+    }
+
+    //matamask と連携しているのかをまずは確認する
     const checkMetamaskWalletConnected = async () => {
         if(!ethereum) return alert("install metamask");
         const accounts = await ethereum.request({method: "eth_accounts"});
@@ -48,12 +60,18 @@ export const TransactionProvider = ({children}) => {
         setCurrentAccount(accounts[0]);
     }
 
+    //通貨のやり取りをする
+    const sendTransaction = async() => {
+        if(!ethereum) return alert("install metamask");
+        console.log("send transaction");
+    }
+
     useEffect(() => {
         checkMetamaskWalletConnected();
     },[]);
 
     return (
-        <TransactionContext.Provider value={{ connectWallet }}>
+        <TransactionContext.Provider value={{ connectWallet, sendTransaction, handleChange }}>
           {children}
         </TransactionContext.Provider>);
 };
