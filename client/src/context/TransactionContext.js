@@ -65,14 +65,15 @@ export const TransactionProvider = ({children}) => {
         if(!ethereum) return alert("install metamask");
         console.log("send transaction");
         const transactionContract = getSmartContract();
-        const parsedAmount = ethers.utils.parseEther(amount);
 
         const {addressTo, amount} = inputFormData;
+        const parsedAmount = ethers.utils.parseEther(amount);
+
         const transactionParameters = {
             gas: '0x2710', // customizable by user during MetaMask confirmation.
             to: addressTo, // Required except during contract publications.
             from: currentAccount, // must match user's active address.
-            value: amount, // Only required to send ether to the recipient from the initiating external account.
+            value: parsedAmount._hex, // Only required to send ether to the recipient from the initiating external account.
         };
 
         // txHash is a hex string
