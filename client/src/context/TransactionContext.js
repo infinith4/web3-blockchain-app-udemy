@@ -64,15 +64,32 @@ export const TransactionProvider = ({children}) => {
     const sendTransaction = async() => {
         if(!ethereum) return alert("install metamask");
         console.log("send transaction");
+        const transactionContract = getSmartContract();
+        const parsedAmount = ethers.utils.parseEther(amount);
+
+        const {addressTo, amount} = inputFormData;
+        const transactionParameters = {
+            gas: '0x2710', // customizable by user during MetaMask confirmation.
+            to: addressTo, // Required except during contract publications.
+            from: currentAccount, // must match user's active address.
+            value: amount, // Only required to send ether to the recipient from the initiating external account.
+        };
+
+        // txHash is a hex string
+        // As with any RPC call, it may throw an error
+        const txHash = await ethereum.request({
+            method: 'eth_sendTransaction',
+            params: [transactionParameters],
+        });
+
+        const transactionHash = await transactionContract.addToBlockChain(
+            addressTo,
+            parsedAmount
+            );
+            console.log(`loading${transactionHash.hash}`);
+            await transactionHash.wait();
+            console.log(`success send${transactionHash.hash}`)
     }
-
-    const transactionParameters = {
-        gas: '0x2710', // customizable by user during MetaMask confirmation.
-        to: '', // Required except during contract publications.
-        from: currentAccount, // must match user's active address.
-        value: '0x00', // Only required to send ether to the recipient from the initiating external account.
-      };
-
     useEffect(() => {
         checkMetamaskWalletConnected();
     },[]);
